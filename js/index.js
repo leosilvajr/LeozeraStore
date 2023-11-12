@@ -1,8 +1,4 @@
-// Variável global para armazenar os dados da API
 let data = [];
-
-
-// Função assíncrona para buscar dados da API
 async function fetchProducts() {
     try {
         const response = await fetch('https://fakestoreapi.com/products');
@@ -16,50 +12,36 @@ async function fetchProducts() {
     }
 }
 
-
-// Função para renderizar os cards dos produtos na página
 async function renderCards() {
-    // Chama a função fetchProducts para obter os dados da API
     const data = await fetchProducts();
-    // Para cada elemento nos dados, chama a função createCard para criar um card
     data.forEach(element => {
         createCard(element);
     });
 }
 
-// Seleciona a lista principal na qual os cards serão inseridos
 const listUl = document.querySelector("#listaPrincipal");
 
-// Função para criar um card com base nos dados fornecidos
-function createCard({ id, image, category, title, description, price }) {
-    // Insere HTML na lista principal com os dados do produto
+function createCard({ id, image, title,  price }) {
     listUl.insertAdjacentHTML("beforeend", `
     <div class="card" style="width: 18rem;" id="${id}">
       <img src="${image}" class="card-img-top" alt="${title}">
-      <div class="card-body">
-        <h5 class="card-title">${title}</h5>
+        <h3 class="card-title">${title}</h3>
         <p class="preco">$${price}</p>
         <button class="botao" id="b_${id}">Adicionar ao carrinho</button>
-      </div>
+        </div>
     </div>
 `);
 }
-
-// Renderiza os cards na página
 renderCards();
 
 // Função para filtrar os produtos com base na categoria
 function filtraProdutos() {
-    // Seleciona todos os botões com o atributo data-btn
     const buttons = document.querySelectorAll('[data-btn]');
 
-    // Adiciona um ouvinte de evento para cada botão
     buttons.forEach(element => {
         element.addEventListener('click', async (e) => {
-            // Obtém o valor do atributo data-btn do botão clicado
             const value = e.target.dataset.btn;
             if (value !== "") {
-                // Se o valor não for vazio, filtra os produtos por categoria
                 listUl.innerHTML = "";
                 const products = await fetchProducts();
                 const newArray = products.filter(({ category }) => {
@@ -67,7 +49,6 @@ function filtraProdutos() {
                 });
                 newArray.forEach(element => createCard(element));
             } else {
-                // Se o valor for vazio, exibe todos os produtos
                 listUl.innerHTML = "";
                 renderCards();
             }
@@ -75,8 +56,7 @@ function filtraProdutos() {
     });
 }
 
-
-// Função para pesquisar produtos com base no input do usuário
+// Função para pesquisar produtos
 function pesquisarProduto() {
 
     const search = document.querySelector('#searchButton');
@@ -103,19 +83,12 @@ function pesquisarProduto() {
         newArray.forEach(element => createCard(element))
     })
 }
-
 pesquisarProduto()
-
-// Aplica o filtro de produtos
 filtraProdutos();
 
-// Processo de adicionar itens ao carrinho
-
-// Seleciona a lista de compras e todos os botões de adicionar ao carrinho
 const listaSelecionados = document.querySelector('#listaCompras');
 const botoesAdd = document.querySelectorAll('.botao');
 
-// Arrays para armazenar itens selecionados e itens na lista
 let selecionados = [];
 let itensNaLista = [];
 
@@ -136,21 +109,16 @@ function loadList() {
     }
 }
 
-// Função para criar um botão de remoção
-function removeButton() {
-    listaSelecionados.innerHTML = "";
-    const removeButton = document.createElement('button');
-    removeButton.addEventListener('click', (e) => {
-        // Remove o item da lista e recalcula o total e a quantidade
-        let itemId = selecionados.filter((_, index) => index === Number(e.path[2].id));
-        itemId = itemId[0].id;
 
+function removeButton(itemId) {
+    const removeButton = document.createElement('button');
+    removeButton.addEventListener('click', () => {
         itensNaLista.splice(itemId, 1);
         contaFinal = 0;
 
         for (let d = 0; d < itensNaLista.length; d++) {
             let item = itensNaLista[d];
-            contaFinal += item.value;
+            contaFinal += item.price;
         }
         spanPreco.innerText = `R$${contaFinal},00`;
 
@@ -158,126 +126,108 @@ function removeButton() {
         spanQuantdTotal.innerText = `${quantia}`;
 
         if (quantia <= 0) {
-            // Se a quantidade for zero, remove a seção de total a pagar
             divTotalPago.classList.remove('totalPagar');
             divTotalPago.innerHTML = "";
         }
 
-        selecionados = selecionados.filter((_, index) => index !== Number(e.path[2].id));
+        selecionados = selecionados.filter((_, index) => index !== itemId);
         loadList();
     });
     removeButton.innerText = 'Remover produto';
     removeButton.classList.add('remover');
     return removeButton;
+
 }
 
-// Elemento HTML para exibir o total a pagar
+
 let divTotalPago = document.createElement('div');
 
-// Elemento HTML para exibir a quantidade de itens no carrinho
 let p1 = document.createElement('p');
 
-// Elemento HTML para exibir a label 'Quantidade'
 let spanQuantd = document.createElement('span');
 spanQuantd.innerText = 'Quantidade';
 
-// Elemento HTML para exibir o número total de itens no carrinho
 let spanQuantdTotal = document.createElement('span')
 spanQuantdTotal.innerText = ""
 
-// Adiciona os elementos à estrutura HTML
 p1.append(spanQuantd, spanQuantdTotal)
 
-// Elemento HTML para exibir o total do carrinho
 let p2 = document.createElement('p');
 
-// Elemento HTML para exibir a label 'Total'
 let spanTotal = document.createElement('span');
 spanTotal.innerText = 'Total'
 
-// Elemento HTML para exibir o preço total do carrinho
 let spanPreco = document.createElement('span');
 spanPreco.innerText = ""
 
-// Adiciona os elementos à estrutura HTML
 p2.append(spanTotal, spanPreco)
 
-// Adiciona as estruturas HTML à divTotalPago
 divTotalPago.append(p1, p2);
 
-// Variáveis para armazenar o total e a quantidade de itens no carrinho
 let contaFinal = 0;
 let quantia = 0;
 
+function addToCart(productId) {
+    console.log(`Produto com ID ${productId} adicionado ao carrinho.`);
 
-
-// Loop para adicionar ouvinte de evento a cada botão de adicionar ao carrinho
-for (let z = 0; z < botoesAdd.length; z++) {
-    let botao = botoesAdd[z]
+    listaSelecionados.classList.replace('listaSelecionados', 'listaComItens');
     
-    botao.addEventListener('click', (e) => {
-        
-        listaSelecionados.classList.replace('listaSelecionados', 'listaComItens')
-        
-        let dataPosicao = data[z]
+    const dataPosicao = data.find(item => item.id == productId);
 
-        quantia += 1
-        spanQuantdTotal.innerText = `${quantia}`
-        if(quantia !== 0){
-            carroComItens()
-        }
+    quantia += 1;
+    spanQuantdTotal.innerText = `${quantia}`;
+    if (quantia !== 0) {
+        carroComItens();
+    }
 
-        contaFinal += data[z].price
-        spanPreco.innerText = `R$${contaFinal},00`
-        
-        let newItem = document.createElement("li");
-        
-        let imgCarrinho = document.createElement('img');
-        imgCarrinho.src = dataPosicao.img;
-        newItem.appendChild(imgCarrinho)
-        
-        let divItemCarrinho = document.createElement('div');
-        divItemCarrinho.classList.add('carrinhoItem')
-        
-        let h3Item = document.createElement('h3');
-        h3Item.innerText = dataPosicao.title
-        divItemCarrinho.appendChild(h3Item);
-        
-        let pCarrinho = document.createElement("p");
-        pCarrinho.innerText = `R$${dataPosicao.price},00`;
-        divItemCarrinho.appendChild(pCarrinho)
-        
-        let removerButton = removeButton();
-        divItemCarrinho.appendChild(removerButton)
-    
-        newItem.appendChild(divItemCarrinho)
-        selecionados.push(newItem);
-        itensNaLista.push(data[z])
-        loadList();
-        filtraProdutos();
-        pesquisarProduto();
-    })
-    
+    contaFinal += dataPosicao.price;
+    spanPreco.innerText = `R$${contaFinal},00`;
+
+    const newItem = document.createElement("li");
+
+    const imgCarrinho = document.createElement('img');
+    imgCarrinho.src = dataPosicao.image;
+    newItem.appendChild(imgCarrinho);
+
+    const divItemCarrinho = document.createElement('div');
+    divItemCarrinho.classList.add('carrinhoItem');
+
+    const h3Item = document.createElement('h3');
+    h3Item.innerText = dataPosicao.title;
+    divItemCarrinho.appendChild(h3Item);
+
+    const pCarrinho = document.createElement("p");
+    pCarrinho.innerText = `R$${dataPosicao.price},00`;
+    divItemCarrinho.appendChild(pCarrinho);
+
+    const removerButton = removeButton();
+    divItemCarrinho.appendChild(removerButton);
+
+    newItem.appendChild(divItemCarrinho);
+    selecionados.push(newItem);
+    itensNaLista.push(dataPosicao);
+    loadList();
+    filtraProdutos();
+    pesquisarProduto();
 }
 
-// Função para exibir mensagem quando o carrinho está vazio
+document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('botao')) {
+        const productId = e.target.id.split('_')[1];
+
+        addToCart(productId);
+    }
+});
 function carroVazio() {
-
-    // Troca a classe da lista de seleção para exibir a mensagem de carrinho vazio
     listaSelecionados.classList.replace('listaComItens', 'listaSelecionados')
-
-    // Insere HTML na listaSelecionados para exibir a mensagem
     listaSelecionados.insertAdjacentHTML('beforeend', `
         <h3 id="carrinhoVazio">Carrinho Vazio</h3>
         <small id="small">Adicione Itens</small>
     `)
 }
-
-// Função para exibir a seção de total a pagar quando o carrinho possui itens
 function carroComItens() {
     divTotalPago.classList.add('totalPagar')
     divTotalPago.append(p1, p2);
-    // Seleciona o elemento com a classe 'carrinho' e adiciona a divTotalPago
     let carrinho = document.querySelector('.carrinho')
     carrinho.appendChild(divTotalPago)
 }
