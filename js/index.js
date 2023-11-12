@@ -38,7 +38,7 @@ renderCards();
 
 
 // Função para filtrar os produtos com base na categoria
-function filtraProdutos() {
+async function filtraProdutos() {
     const buttons = document.querySelectorAll('[data-btn]');
 
     buttons.forEach(element => {
@@ -46,7 +46,7 @@ function filtraProdutos() {
             const value = e.target.dataset.btn;
             if (value !== "") {
                 listUl.innerHTML = "";
-                const products = await fetchProducts();
+                const products = await fetchProducts(); // Assumindo que fetchProducts é uma função assíncrona
                 const newArray = products.filter(({ category }) => {
                     return category === value;
                 });
@@ -59,33 +59,37 @@ function filtraProdutos() {
     });
 }
 
-// Função para pesquisar produtos
-function pesquisarProduto() {
 
+// Função para pesquisar produtos
+async function pesquisarProduto() {
     const search = document.querySelector('#searchButton');
     const input = document.querySelector('#input')
-    
-    search.addEventListener('click', (e) => {
+
+    search.addEventListener('click', async (e) => {
         e.preventDefault();
-        listUl.innerHTML = ""
+        listUl.innerHTML = "";
         const produto = input.value;
-        const newArray = data.filter(element => {
-            return element.title.includes(produto) || element.description.includes(produto)
-            
-        })
-        newArray.forEach(element => createCard(element))
-        return newArray
-    })
-    input.addEventListener('change', (e) => {
-        e.preventDefault()
-        listUl.innerHTML = ""
+        const newArray = await filterProducts(produto);
+        newArray.forEach(element => createCard(element));
+        return newArray;
+    });
+
+    input.addEventListener('input', async (e) => {
+        e.preventDefault();
+        listUl.innerHTML = "";
         const produto = input.value;
-        const newArray = data.filter(element => {
-            return element.title.includes(produto) || element.description.includes(produto)
-        })
-        newArray.forEach(element => createCard(element))
-    })
+        const newArray = await filterProducts(produto);
+        newArray.forEach(element => createCard(element));
+    });
 }
+
+// Função auxiliar assíncrona para filtrar produtos
+async function filterProducts(produto) {
+    return data.filter(element => {
+        return element.title.includes(produto) || element.description.includes(produto);
+    });
+}
+
 pesquisarProduto()
 filtraProdutos();
 //# FIM DA REGIÃO DE CONSULTA.
@@ -103,7 +107,7 @@ function loadList() {
     if (quantia <= 0) {
         // Se a quantidade for zero, limpa a lista e exibe que o carrinho está vazio
         listaSelecionados.innerHTML = "";
-        carroVazio();
+        atualizarEstadoCarrinho();
     } else {
         listaSelecionados.innerHTML = "";
     }
@@ -182,7 +186,7 @@ function addToCart(productId) {
     quantia += 1;
     spanQuantdTotal.innerText = `${quantia}`;
     if (quantia !== 0) {
-        carroComItens();
+        atualizarEstadoCarrinho();
     }
 
     contaFinal += dataPosicao.price;
@@ -223,16 +227,19 @@ document.addEventListener('click', function (e) {
         addToCart(productId);
     }
 });
-function carroVazio() {
-    listaSelecionados.classList.replace('listaComItens', 'listaSelecionados')
-    listaSelecionados.insertAdjacentHTML('beforeend', `
-        <h3 id="carrinhoVazio">Carrinho Vazio</h3>
-        <small id="small">Adicione Itens</small>
-    `)
-}
-function carroComItens() {
-    divTotalPago.classList.add('totalPagar')
-    divTotalPago.append(p1, p2);
-    let carrinho = document.querySelector('.carrinho')
-    carrinho.appendChild(divTotalPago)
+function atualizarEstadoCarrinho() {
+    if (quantia <= 0) {
+        listaSelecionados.classList.replace('listaComItens', 'listaSelecionados');
+        listaSelecionados.innerHTML = `
+            <h3 id="carrinhoVazio">Carrinho Vazio</h3>
+            <small id="small">Adicione Itens</small>
+        `;
+    } else {
+        listaSelecionados.classList.add('listaComItens');
+        listaSelecionados.innerHTML = '';
+        divTotalPago.classList.add('totalPagar');
+        divTotalPago.append(p1, p2);
+        let carrinho = document.querySelector('.carrinho');
+        carrinho.appendChild(divTotalPago);
+    }
 }

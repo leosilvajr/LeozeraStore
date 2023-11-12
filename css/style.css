@@ -32,7 +32,7 @@ header .container .logo {
   align-items: center;
 }
 #purple {
-  color: #37268ce1;
+  color: #268c2ee1;
 }
 
 header .container .itensNav {
@@ -99,7 +99,7 @@ main .container {
   padding: 6px;
 }
 .card:hover {
-  border: 2px solid #37268c;
+  border: 2px solid #268c2ee1;
 }
 .card img {
   background-color: #f5f5f5;
@@ -136,7 +136,7 @@ main .container {
   border: 1px solid black;
 }
 .card .preco {
-  color: purple;
+  color: #268c2ee1;
   padding: 2px 5px;
   font-weight: 600;
 }
@@ -150,9 +150,9 @@ main .container {
   margin: 5px;
 }
 .card .botao:hover {
-  border-bottom: 2px #37268c solid;
+  border-bottom: 2px #268c2ee1 solid;
   border-radius: 2px;
-  color: #37268c;
+  color: #268c2ee1;
 
   cursor: pointer;
 }
@@ -185,11 +185,11 @@ main .container {
   height: 40px;
   font-size: 11px;
   width: 90px;
-  background-color: #37268c;
+  background-color: #0e0e0ff3;
   color: white;
 }
 #searchButton:hover {
-  background-color: #37268ce8;
+  background-color: #0e0e0ff3;
   cursor: pointer;
 }
 .secaoDireita .carrinho {
@@ -202,7 +202,7 @@ main .container {
 }
 #tituloCarrinho {
   height: 70px;
-  background-color: #37268cf3;
+  background-color: #0e0e0ff3;
   width: 100%;
   display: flex;
   font-size: 14px;
@@ -247,8 +247,8 @@ main .container {
 }
 
 .carrinho .listaComItens img {
-  width: 110px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
 }
 
 .comprasCarrinho {
@@ -289,15 +289,12 @@ main .container {
   font-family: "Inter", sans-serif;
 }
 
-.carrinhoItem p {
-  color: #37268c;
-}
 .carrinhoItem .remover {
   background-color: #f5f5f5;
   border: 1px #f5f5f5 solid;
 }
 .carrinhoItem .remover:hover {
-  border-bottom: 1px rgb(0, 0, 0) solid;
+  border-bottom: 1px rgb(138, 36, 36) solid;
   cursor: pointer;
 }
 .carrinho .totalPagar {
@@ -310,7 +307,7 @@ main .container {
   align-content: center;
   flex-wrap: nowrap;
   height: 100px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .carrinho .totalPagar p {
   display: flex;
