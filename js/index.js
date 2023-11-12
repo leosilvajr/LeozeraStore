@@ -34,6 +34,9 @@ function createCard({ id, image, title,  price }) {
 }
 renderCards();
 
+
+
+
 // Função para filtrar os produtos com base na categoria
 function filtraProdutos() {
     const buttons = document.querySelectorAll('[data-btn]');
@@ -85,6 +88,9 @@ function pesquisarProduto() {
 }
 pesquisarProduto()
 filtraProdutos();
+//# FIM DA REGIÃO DE CONSULTA.
+
+
 
 const listaSelecionados = document.querySelector('#listaCompras');
 const botoesAdd = document.querySelectorAll('.botao');
@@ -120,7 +126,7 @@ function removeButton(itemId) {
             let item = itensNaLista[d];
             contaFinal += item.price;
         }
-        spanPreco.innerText = `R$${contaFinal},00`;
+        spanPreco.innerText = `$${contaFinal}`;
 
         quantia -= 1;
         spanQuantdTotal.innerText = `${quantia}`;
@@ -130,13 +136,12 @@ function removeButton(itemId) {
             divTotalPago.innerHTML = "";
         }
 
-        selecionados = selecionados.filter((_, index) => index !== itemId);
+        selecionados.splice(itemId, 1);
         loadList();
     });
     removeButton.innerText = 'Remover produto';
     removeButton.classList.add('remover');
     return removeButton;
-
 }
 
 
@@ -181,7 +186,7 @@ function addToCart(productId) {
     }
 
     contaFinal += dataPosicao.price;
-    spanPreco.innerText = `R$${contaFinal},00`;
+    spanPreco.innerText = `$${contaFinal}`;
 
     const newItem = document.createElement("li");
 
@@ -197,7 +202,7 @@ function addToCart(productId) {
     divItemCarrinho.appendChild(h3Item);
 
     const pCarrinho = document.createElement("p");
-    pCarrinho.innerText = `R$${dataPosicao.price},00`;
+    pCarrinho.innerText = `$${dataPosicao.price}`;
     divItemCarrinho.appendChild(pCarrinho);
 
     const removerButton = removeButton();

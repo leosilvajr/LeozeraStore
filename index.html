@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <!-- Metadados do documento -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Links para os estilos CSS e o favicon -->
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="shortcut icon" href="./img/assets/favicon.png" type="image/x-icon">
     
-    <!-- Título da página -->
     <title>Leozera's</title>
   </head>
   <body>
-    <!-- Cabeçalho da página -->
     <header>
       <!-- Container para centralizar conteúdo -->
       <div class="container">
@@ -24,8 +20,6 @@
           <span id="purple">Leozera </span>
           Store
         </h1>
-
-        <!-- Navegação de itens da loja -->
         <nav class="itensNav">
           <button data-btn="">All Itens</button>
           <button data-btn="electronics">Electronics</button>
@@ -34,29 +28,18 @@
           <button data-btn="men's clothing">Men's Clothing</button>
         </nav>
       </div>
-
-      <!-- Div extra (sem conteúdo especificado) -->
-      <div></div>
     </header>
 
-    <!-- Corpo principal da página -->
     <main>
-      <!-- Container para centralizar conteúdo -->
       <div class="container">
-        <!-- Seção da vitrine de produtos -->
         <div class="vitrine">
-          <!-- Lista de roupas onde os produtos serão exibidos -->
           <ul class="listaRoupas" id="listaPrincipal">
           </ul>
         </div>
 
-        <!-- Seção à direita da página -->
         <div class="secaoDireita">
-          <!-- Seção do carrinho de compras e pesquisa -->
           <div class="carrinhoDeCompras">
-            <!-- Campo de pesquisa -->
             <input type="text" placeholder="O que está procurando..." id="input" />
-            <!-- Botão de pesquisa -->
             <button type="search" id="searchButton">Pesquisar</button>
           </div>
 
@@ -66,7 +49,6 @@
             <p id="tituloCarrinho">Carrinho de Compras</p>
             <!-- Lista de itens selecionados (carrinho) -->
             <ul class="listaSelecionados" id="listaCompras">
-              <!-- Div para exibir mensagem quando o carrinho está vazio -->
               <div class="comprasCarrinho">
                 <h3 id="carrinhoVazio">Carrinho Vazio</h3>
                 <small id="small">adicione itens</small>
@@ -76,8 +58,7 @@
         </div>
       </div>
     </main>
-    
-    <!-- Scripts JavaScript -->
+
     <script src="./js/index.js"></script>
   </body>
 </html>
