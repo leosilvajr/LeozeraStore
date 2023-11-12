@@ -39,7 +39,7 @@ function createCard({ id, image, category, title, description, price }) {
       <div class="card-body">
         <h5 class="card-title">${title}</h5>
         <p class="preco">$${price}</p>
-        <button class="btn btn-primary botao" id="b_${id}">Adicionar ao carrinho</button>
+        <button class="botao" id="b_${id}">Adicionar ao carrinho</button>
       </div>
     </div>
 `);
@@ -209,71 +209,55 @@ divTotalPago.append(p1, p2);
 let contaFinal = 0;
 let quantia = 0;
 
+
+
 // Loop para adicionar ouvinte de evento a cada botão de adicionar ao carrinho
 for (let z = 0; z < botoesAdd.length; z++) {
     let botao = botoesAdd[z]
-
+    
     botao.addEventListener('click', (e) => {
-
-        // Troca a classe da lista de seleção para exibir a lista de itens no carrinho
+        
         listaSelecionados.classList.replace('listaSelecionados', 'listaComItens')
-
-        // Obtém os dados do produto na posição z
+        
         let dataPosicao = data[z]
 
-        // Incrementa a quantidade de itens no carrinho e atualiza a exibição
         quantia += 1
         spanQuantdTotal.innerText = `${quantia}`
-        
-        // Se houver itens no carrinho, exibe a seção de total a pagar
         if(quantia !== 0){
             carroComItens()
         }
 
-        // Adiciona o preço do produto ao total e atualiza a exibição
-        contaFinal += data[z].value
+        contaFinal += data[z].price
         spanPreco.innerText = `R$${contaFinal},00`
-
-        // Cria um novo item na lista de seleção (carrinho)
+        
         let newItem = document.createElement("li");
-
-        // Cria uma imagem do produto
+        
         let imgCarrinho = document.createElement('img');
         imgCarrinho.src = dataPosicao.img;
         newItem.appendChild(imgCarrinho)
-
-        // Cria uma div para o item do carrinho
+        
         let divItemCarrinho = document.createElement('div');
         divItemCarrinho.classList.add('carrinhoItem')
-
-        // Cria um título (nome do produto) para o item do carrinho
+        
         let h3Item = document.createElement('h3');
-        h3Item.innerText = dataPosicao.nameItem
+        h3Item.innerText = dataPosicao.title
         divItemCarrinho.appendChild(h3Item);
-
-        // Cria um parágrafo para exibir o preço do produto no carrinho
+        
         let pCarrinho = document.createElement("p");
-        pCarrinho.innerText = `R$${dataPosicao.value},00`;
+        pCarrinho.innerText = `R$${dataPosicao.price},00`;
         divItemCarrinho.appendChild(pCarrinho)
-
-        // Cria um botão de remoção e adiciona à divItemCarrinho
+        
         let removerButton = removeButton();
         divItemCarrinho.appendChild(removerButton)
-
-        // Adiciona a divItemCarrinho ao newItem
+    
         newItem.appendChild(divItemCarrinho)
-
-        // Adiciona o newItem à lista de itens selecionados (carrinho)
         selecionados.push(newItem);
-        // Adiciona o produto à lista de itens na lista
         itensNaLista.push(data[z])
-        // Carrega a lista de itens no carrinho
         loadList();
-        // Atualiza a exibição dos produtos na página
         filtraProdutos();
-        // Atualiza a exibição dos produtos pesquisados
         pesquisarProduto();
     })
+    
 }
 
 // Função para exibir mensagem quando o carrinho está vazio
