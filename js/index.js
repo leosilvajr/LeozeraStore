@@ -1,18 +1,21 @@
+// Variável global para armazenar os dados da API
+let data = [];
+
+
 // Função assíncrona para buscar dados da API
 async function fetchProducts() {
     try {
-        // Faz uma requisição à API e espera pela resposta
         const response = await fetch('https://fakestoreapi.com/products');
-        // Converte a resposta para JSON
         const products = await response.json();
-        // Retorna os produtos obtidos da API
+        // Atribui os produtos à variável globalData
+        data = products;
         return products;
     } catch (error) {
-        // Em caso de erro, imprime o erro no console e retorna uma lista vazia
         console.error('Erro ao buscar dados da API:', error);
         return [];
     }
 }
+
 
 // Função para renderizar os cards dos produtos na página
 async function renderCards() {
@@ -72,40 +75,36 @@ function filtraProdutos() {
     });
 }
 
-// Função para pesquisar produtos com base no input de busca
-function pesquisarProduto() {
-    // Seleciona o botão de pesquisa e o campo de input
-    const search = document.querySelector('#searchButton');
-    const input = document.querySelector('#input');
 
-    // Adiciona um ouvinte de evento para o clique no botão de pesquisa
+// Função para pesquisar produtos com base no input do usuário
+function pesquisarProduto() {
+
+    const search = document.querySelector('#searchButton');
+    const input = document.querySelector('#input')
+    
     search.addEventListener('click', (e) => {
         e.preventDefault();
-        listUl.innerHTML = "";
+        listUl.innerHTML = ""
         const produto = input.value;
-        // Filtra os produtos com base no nome ou descrição digitados
         const newArray = data.filter(element => {
-            return element.nameItem.includes(produto) || element.description.includes(produto);
-        });
-        newArray.forEach(element => createCard(element));
-        return newArray;
-    });
-
-    // Adiciona um ouvinte de evento para a mudança no campo de input
+            return element.title.includes(produto) || element.description.includes(produto)
+            
+        })
+        newArray.forEach(element => createCard(element))
+        return newArray
+    })
     input.addEventListener('change', (e) => {
-        e.preventDefault();
-        listUl.innerHTML = "";
+        e.preventDefault()
+        listUl.innerHTML = ""
         const produto = input.value;
-        // Filtra os produtos com base no nome ou descrição digitados
         const newArray = data.filter(element => {
-            return element.nameItem.includes(produto) || element.description.includes(produto);
-        });
-        newArray.forEach(element => createCard(element));
-    });
+            return element.title.includes(produto) || element.description.includes(produto)
+        })
+        newArray.forEach(element => createCard(element))
+    })
 }
 
-// Inicia a pesquisa de produtos
-pesquisarProduto();
+pesquisarProduto()
 
 // Aplica o filtro de produtos
 filtraProdutos();
