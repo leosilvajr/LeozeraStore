@@ -2,6 +2,9 @@
 
 Bem-vindo à **Leozera's Store**! Este é um projeto simples e intuitivo que simula uma loja online, utilizando uma API falsa para exibir produtos, permitindo consultas, adição ao carrinho, e organização por categorias. O projeto foi desenvolvido utilizando apenas HTML, JavaScript e CSS.
 
+### Home Page
+![Home](https://i.ibb.co/QJkhzwn/Screenshot-4.png)
+
 ## Funcionalidades Principais
 
 - **Consulta de Produtos:** Explore uma variedade de produtos disponíveis na loja.
